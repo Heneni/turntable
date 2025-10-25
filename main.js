@@ -1,8 +1,8 @@
 // Spline runtime with optional spin and drag-friendly input (keeps scroll-zoom off).
 import { Application } from 'https://unpkg.com/@splinetool/runtime/build/runtime.js';
 
-// Default scene remains the original; you can override with ?scene=<full .splinecode URL>
-const DEFAULT_SCENE = 'https://prod.spline.design/zOBPkx6itcuWM1m7/scene.splinecode';
+// Default scene is the updated platter you provided; override with ?scene=<.splinecode URL> if needed.
+const DEFAULT_SCENE = 'https://prod.spline.design/88b4bfa4-bcfb-40fc-9056-1748fe134cea/scene.splinecode';
 const params = new URLSearchParams(location.search);
 const SCENE_URL = params.get('scene') || DEFAULT_SCENE;
 
