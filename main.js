@@ -1,6 +1,9 @@
-// Spline runtime with drag enabled and optional spin; default scene set to updated platter.
-import { Application } from 'https://unpkg.com/@splinetool/runtime/build/runtime.js';
-const DEFAULT_SCENE = 'https://prod.spline.design/88b4bfa4-bcfb-40fc-9056-1748fe134cea/scene.splinecode';
+// Spline runtime with drag enabled and optional spin; default scene set to KNOWN-GOOD prod URL.
+import { Application } from 'https://unpkg.com/@splinetool/runtime@latest/build/runtime.js';
+
+// Revert to the previously working prod scene.
+const DEFAULT_SCENE = 'https://prod.spline.design/zOBPkx6itcuWM1m7/scene.splinecode';
+
 const params = new URLSearchParams(location.search);
 const SCENE_URL = params.get('scene') || DEFAULT_SCENE;
 const rpm = parseFloat(params.get('rpm') || '33.33');
@@ -11,6 +14,7 @@ const app = new Application(canvas);
 (async () => {
   await app.load(SCENE_URL);
   const stop = (e) => { e.preventDefault(); e.stopPropagation(); };
+  // Keep drag/touch working; block wheel zoom only.
   canvas.addEventListener('wheel', stop, { passive: false });
   let target = null;
   const candidates = preferredName ? [preferredName] : ['Record','record','Vinyl','vinyl','Disc','disc','Platter','platter'];
@@ -25,4 +29,4 @@ const app = new Application(canvas);
   }
   const resize = () => { const dpr = Math.min(window.devicePixelRatio||1,2); canvas.width=Math.floor(canvas.clientWidth*dpr); canvas.height=Math.floor(canvas.clientHeight*dpr); };
   new ResizeObserver(resize).observe(canvas); resize();
-})().catch(err => { console.error('Failed to load Spline scene:', err); const msg=document.createElement('div'); msg.textContent='Oops — failed to load the Spline scene.'; msg.style.cssText='position:fixed;inset:0;display:grid;place-items:center;color:#fff;font:16px/1.4 system-ui'; document.body.appendChild(msg); });
+})().catch(err => { console.error('Failed to load Spline scene:', err); const msg=document.createElement('div'); msg.innerHTML='Oops — failed to load the Spline scene.<br/><small>Tip: use a <code>prod.spline.design/.../scene.splinecode</code> URL via <code>?scene=</code></small>'; msg.style.cssText='position:fixed;inset:0;display:grid;place-items:center;color:#fff;text-align:center;font:16px/1.4 system-ui;padding:24px'; document.body.appendChild(msg); });
