@@ -1,2 +1,0 @@
-# turntable
-spline turntable
